@@ -232,8 +232,9 @@ SECTIONS = {
               "whole study), raw results (results/raw/times.csv, runs.csv), summary tables, analysis "
               "scripts and figures. The input matrices are not stored; data/generate_inputs.py recreates "
               "them and data/manifest.json lets you check that they are identical (SHA-256)."),
-        ("p", "**Use of generative AI.** Claude (Anthropic) was used to help plan the study, write a draft of "
-              "the benchmark, analysis and report scripts, and revise the English. I ran all the measurements "
-              "on my computer, checked the results and I am responsible for the code and the conclusions."),
+        ("p", "**Use of generative AI.** I used Claude (Anthropic) as a support tool to help write the "
+              "code and draft the text of this report. I reviewed all the code and the text, ran every "
+              "test and measurement on my own computer, and checked the results. I am responsible for the "
+              "code, the data and the conclusions."),
     ],
 }
