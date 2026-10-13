@@ -1,0 +1,19 @@
+language,n,status,warmup_runs,measured_runs,wall_s,predicted_total_s,peak_memory_bytes,memory_metric,theoretical_array_bytes,time_budget_s,memory_budget_mb
+c,64,ok,1,5,0.02,,1974272,peak working set (psutil peak_wset),98304,1200,4096
+c,128,ok,1,5,0.04,0.0,5095424,peak working set (psutil peak_wset),393216,1200,4096
+c,256,ok,1,5,0.18,0.1,6246400,peak working set (psutil peak_wset),1572864,1200,4096
+c,512,ok,1,5,3.58,1.2,10870784,peak working set (psutil peak_wset),6291456,1200,4096
+c,1024,ok,1,5,29.41,28.4,29745152,peak working set (psutil peak_wset),25165824,1200,4096
+c,2048,ok,1,5,243.51,235.0,105226240,peak working set (psutil peak_wset),100663296,1200,4096
+java,64,ok,3,5,0.10,,47808512,peak working set (psutil peak_wset),98304,1200,4096
+java,128,ok,3,5,0.11,0.0,49229824,peak working set (psutil peak_wset),393216,1200,4096
+java,256,ok,3,5,0.20,0.1,53583872,peak working set (psutil peak_wset),1572864,1200,4096
+java,512,ok,3,5,1.22,0.8,72994816,peak working set (psutil peak_wset),6291456,1200,4096
+java,1024,ok,3,5,13.33,8.9,144805888,peak working set (psutil peak_wset),25165824,1200,4096
+java,2048,ok,3,5,252.73,111.0,379043840,peak working set (psutil peak_wset),100663296,1200,4096
+python,64,ok,1,5,0.22,,15450112,peak working set (psutil peak_wset),98304,1200,4096
+python,128,ok,1,5,1.06,1.0,17084416,peak working set (psutil peak_wset),393216,1200,4096
+python,256,ok,1,5,7.49,7.4,24051712,peak working set (psutil peak_wset),1572864,1200,4096
+python,512,ok,1,5,65.43,57.5,47046656,peak working set (psutil peak_wset),6291456,1200,4096
+python,1024,ok,1,5,579.32,521.8,142098432,peak working set (psutil peak_wset),25165824,1200,4096
+python,2048,skipped_predicted_over_budget,1,5,,4733.4,,peak working set (psutil peak_wset),100663296,1200,4096

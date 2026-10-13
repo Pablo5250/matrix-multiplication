@@ -1,0 +1,4 @@
+language,sizes_used,exponent_b
+c,256 512 1024 2048,3.506
+java,256 512 1024 2048,3.804
+python,256 512 1024,3.182
