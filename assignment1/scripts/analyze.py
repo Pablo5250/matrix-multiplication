@@ -145,8 +145,6 @@ def make_figures(summary, langs):
         err = [[r["median_s"] - r["q1_s"] for r in rows], [r["q3_s"] - r["median_s"] for r in rows]]
         ax.errorbar(n, med, yerr=err, color=COLORS[l], marker=MARKERS[l], markersize=6,
                     linewidth=2, capsize=3, label=NAMES[l])
-        ax.annotate(NAMES[l], (n[-1], med[-1]), textcoords="offset points", xytext=(6, 0),
-                    va="center", color="#333333", fontsize=9)
     c_rows = by_lang.get("c") or next(v for v in by_lang.values() if v)
     n0, t0 = c_rows[0]["n"], c_rows[0]["median_s"]
     ref_n = np.array(all_n, dtype=float)
