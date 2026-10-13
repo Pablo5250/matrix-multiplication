@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "value_range": [0.0, 1.0],
+  "numeric_type": "float64 (IEEE-754 double)",
+
+  "sizes": [64, 128, 256, 512, 1024, 2048],
+  "quick_sizes": [64, 128, 256],
+  "validation_sizes": [16, 64, 128],
+
+  "languages": ["c", "java", "python"],
+  "warmup_runs": {"c": 1, "java": 3, "python": 1},
+  "measured_runs": 5,
+
+  "time_budget_seconds_per_configuration": 1200,
+  "memory_budget_mb": 4096,
+
+  "c_compiler": "gcc",
+  "c_flags": ["-O2", "-std=c11"],
+  "java_options": ["-Xmx4g"],
+
+  "rtol": 1e-9,
+  "atol": 1e-12
+}

@@ -1,0 +1,32 @@
+# Generated input matrices (regenerate with data/generate_inputs.py)
+assignment1/data/inputs/
+
+# Build output
+build/
+*.class
+*.exe
+*.o
+
+# Per-configuration logs (the merged CSVs in results/raw are kept)
+assignment1/results/raw/log_*.txt
+
+# Python / IDE
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+.vscode/
+*.iml
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Report sources from Word (keep only the PDF)
+~$*
+
+# Log of the full run (kept locally)
+assignment1/results/full_run_log.txt
