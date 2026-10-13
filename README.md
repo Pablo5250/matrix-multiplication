@@ -7,7 +7,7 @@ Empirical studies of the performance and scalability of matrix multiplication.
 
 | Assignment | Topic | Folder | Status |
 |---|---|---|---|
-| 1 | Basic implementations in Python, Java and C | [`assignment1/`](assignment1/) | in progress |
+| 1 | Basic implementations in Python, Java and C | [`assignment1/`](assignment1/) | done |
 | 2 | Optimised approaches and sparse matrices | — | — |
 | 3 | Parallel multiplication | — | — |
 | 4 | Distributed multiplication | — | — |
