@@ -35,7 +35,8 @@ SECTIONS = {
             "**Same inputs:** A and B (uniform values in [0, 1), NumPy PCG64, seed 42 + n) are created once "
             "and saved to binary files that the three programs read, so they multiply exactly the same numbers.",
             "**Correct before fast:** unit tests (2×2 and 3×3 by hand, A × I = A, A × 0 = 0) and a comparison with "
-            "NumPy for n = 16, 64, 128 (relative tolerance 10⁻⁹). All passed, and the three languages gave "
+            "NumPy for n = 16, 64, 128 (relative tolerance 10⁻⁹, absolute 10⁻¹²: the expected rounding error is about "
+            "n × 1.1×10⁻¹⁶, below 10⁻¹³ here, so this margin still catches any real bug). All passed, and the three languages gave "
             "bit-identical results.",
             "**Timer:** only the call multiply(A, B), including creating C; reading files is not timed. "
             "Each configuration runs in a new process: warm-up runs (3 in Java for the JIT compiler, 1 in C and "
@@ -50,9 +51,10 @@ SECTIONS = {
         ("h1", "2. Results"),
         ("figure", "runtime_loglog.png", "Figure 1. Median time of one multiplication vs n (log-log axes). "
                                          "The dashed line grows like n³."),
-        ("p", "All lines are almost parallel to the n³ line, so **H1 holds**. Python is far above the others: "
+        ("p", "All lines grow roughly like the n³ line, so **H1 holds**, although C and Java become a few times "
+              "slower per operation at large n (Table 2), because of the cache effect explained below. Python is far above the others: "
               "18 to 190 times slower than C (99 s at n = 1024). Python at n = 2048 was skipped, because the "
-              "predicted time (about 4,700 s) was over the budget. **H2 holds.** The reason is the interpreter: "
+              "predicted time (about 4,700 s) was over the budget; there were no timeouts or memory failures. **H2 holds.** The reason is the interpreter: "
               "each c[i][j] += a[i][k] × b[k][j] runs several bytecode instructions and creates a new float "
               "object, while C and Java run a few machine instructions. The surprise is that **Java was faster "
               "than C** at every n ≥ 128, so **H3 fails** at these sizes."),
@@ -62,18 +64,19 @@ SECTIONS = {
                                              "and n + 1. Dark bars are the powers of two."),
         ("p", "All the tested sizes are powers of two, so we ran C and Java again at n − 1 and n + 1. "
               "**In C, n = 512 and 1024 are 6-7 times slower than their neighbours** (4.6 ns vs 0.6-0.8 ns "
-              "per iteration); Java hardly changes, and at the neighbour sizes C is the fastest. The cause is "
-              "**data locality** [2], [3]: the inner loop reads a column of B. In C the rows are one block, so "
+              "per iteration); Java hardly changes, and at the neighbour sizes C is the fastest. The most likely "
+              "cause is **data locality** [2], [3]: the inner loop reads a column of B. In C the rows are one block, so "
               "b[k][j] and b[k+1][j] are exactly 8n bytes apart (4096 bytes at n = 512). On this CPU those "
-              "addresses all go to the same cache set, which holds only 8 lines [4], so the column is read "
+              "addresses all go to the same cache set, which holds only 8 lines [4], so the column has to be read "
               "again from slower memory every time (conflict misses). In Java each row is a separate object "
-              "with a header, the distance is not a power of two, and the problem mostly disappears. It is not "
-              "a bug: the code is correct and validated; it is the basic algorithm meeting the cache."),
+              "with a header, the distance is not a power of two, and the problem mostly disappears. We did not count cache "
+              "misses directly, but the n ± 1 results fit this explanation. The code is correct; the slowdown comes "
+              "from the basic algorithm and the memory layout."),
         ("figure", "memory.png", "Figure 3. Peak memory of the process vs n. The dashed line is the size of "
                                  "A, B and C as doubles (3 × 8n² bytes)."),
         ("p", "**H4 holds.** C stays close to the size of the data (100 MiB for 96 MiB at n = 2048). Java "
-              "starts at about 45 MiB for the JVM itself and reaches 361 MiB, because each run creates a new "
-              "result and the garbage collector frees old ones later. Python uses 135 MiB for 24 MiB of data at "
+              "starts at about 45 MiB for the JVM itself and reaches 361 MiB, probably because each run creates a "
+              "new result and the garbage collector frees old ones later. Python uses 135 MiB for 24 MiB of data at "
               "n = 1024: each number is an object (24 bytes) plus a pointer (8 bytes), about 4 times more than C."),
 
         # ------------------------------------------------------------------ 3. Conclusions
@@ -89,7 +92,8 @@ SECTIONS = {
             "more memory per number.",
         ]),
         ("p", "**Limitations:** one computer, 5 runs per configuration (IQR below 3% of the median in most "
-              "cases, at most 12%), and memory sampled every 10 ms, so very short runs may be underestimated."),
+              "cases, at most 12%), memory sampled every 10 ms (very short runs may be underestimated), and no hardware "
+              "counters to measure cache misses directly."),
         ("p", "**Future work (next assignments):** the cache problem comes from reading B by columns. Changing "
               "only the loop order to i-k-j makes all accesses sequential, which the course notes show can be "
               "up to 6 times faster at n = 1024 [5]. Blocking (tiling) should reuse the cache even better, and "
