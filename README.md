@@ -1,9 +1,10 @@
 # Matrix Multiplication: Individual Assignments
 
 Big Data, Grado en Ciencia e Ingeniería de Datos, 2026-2027
+
 Author: Pablo Castillo Garcerá
 
-Empirical studies of the performance and scalability of matrix multiplication.
+Experiments about the time and the memory that matrix multiplication needs.
 
 | Assignment | Topic | Folder | Status |
 |---|---|---|---|
