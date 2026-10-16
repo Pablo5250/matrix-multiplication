@@ -37,3 +37,6 @@ assignment1/results/raw/times_*_n*.csv
 # Report sources (only the PDF is published)
 assignment1/report/*.docx
 assignment1/report/*.py
+
+# Local copy of the files to submit (already in assignment1/report/)
+assignment1/ENTREGA_FINAL/
