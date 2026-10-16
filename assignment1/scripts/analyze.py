@@ -2,8 +2,7 @@
 
 Inputs : results/raw/times.csv, results/raw/runs.csv  (written by run_benchmarks.py)
 Outputs: results/summary.csv     median, IQR, ... per (language, n)
-         results/slopes.csv      fitted exponent b in  time ~ a * n^b
-         results/summary.md      the same tables in Markdown (to paste into the report)
+         results/summary.md      the same table in Markdown
          figures/*.png
 Warm-up runs are excluded; every measured run is used (no outlier removal).
 """
@@ -23,7 +22,6 @@ from common import FIGURES_DIR, RAW_DIR, RESULTS_DIR, input_paths, load_config, 
 COLORS = {"c": "#2a78d6", "java": "#eb6834", "python": "#1baf7a"}
 MARKERS = {"c": "o", "java": "s", "python": "^"}
 NAMES = {"c": "C", "java": "Java", "python": "Python"}
-FIT_MIN_N = 256          # fit the exponent only where fixed overheads are negligible
 
 
 def read_csv(path):
@@ -48,7 +46,7 @@ def reference_checksums(sizes):
 
 
 def main():
-    sys.stdout.reconfigure(encoding="utf-8")   # the tables contain symbols like ∝ and ²
+    sys.stdout.reconfigure(encoding="utf-8")
     cfg = load_config()
     times = [r for r in read_csv(RAW_DIR / "times.csv") if r["run_type"] == "measured"]
     runs = read_csv(RAW_DIR / "runs.csv")
@@ -87,33 +85,17 @@ def main():
         w.writeheader()
         w.writerows(summary)
 
-    # ---- fitted exponent: log(time) = log(a) + b * log(n) --------------------
-    slopes = []
-    for lang in langs:
-        pts = [(row["n"], row["median_s"]) for row in summary if row["language"] == lang and row["n"] >= FIT_MIN_N]
-        if len(pts) >= 2:
-            b, log_a = np.polyfit(np.log([p[0] for p in pts]), np.log([p[1] for p in pts]), 1)
-            slopes.append({"language": lang, "sizes_used": " ".join(str(p[0]) for p in pts), "exponent_b": round(b, 3)})
-    with open(RESULTS_DIR / "slopes.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["language", "sizes_used", "exponent_b"])
-        w.writeheader()
-        w.writerows(slopes)
-
-    # ---- Markdown tables for the report --------------------------------------
+    # ---- Markdown table (easy to read on GitHub) ----------------------------
     with open(RESULTS_DIR / "summary.md", "w", encoding="utf-8") as f:
-        f.write("| Language | n | runs | median (s) | IQR (s) | ns / inner iteration | x C | peak memory (MiB) | arrays 3×8n² (MiB) | checksum |\n")
-        f.write("|---|---:|---:|---:|---:|---:|---:|---:|---:|:-:|\n")
+        f.write("| Language | n | runs | median (s) | IQR (s) | peak memory (MiB) | result OK |\n")
+        f.write("|---|---:|---:|---:|---:|---:|:-:|\n")
         for r in summary:
             f.write(f"| {NAMES[r['language']]} | {r['n']} | {r['measured_runs']} | {r['median_s']:.4g} | "
-                    f"{r['iqr_s']:.2g} | {r['ns_per_inner_iteration']:.2f} | {r['relative_to_c']:.1f} | "
-                    f"{r['peak_memory_mib']:.1f} | {r['theoretical_arrays_mib']:.2f} | {'OK' if r['checksum_ok'] else 'FAIL'} |\n")
-        f.write("\n| Language | sizes used | fitted exponent b (time ∝ n^b) |\n|---|---|---:|\n")
-        for s in slopes:
-            f.write(f"| {NAMES[s['language']]} | {s['sizes_used']} | {s['exponent_b']} |\n")
-        f.write("\n| Language | n | status | peak memory (MiB) | predicted total (s) |\n|---|---:|---|---:|---:|\n")
+                    f"{r['iqr_s']:.2g} | {r['peak_memory_mib']:.1f} | {'OK' if r['checksum_ok'] else 'FAIL'} |\n")
+        f.write("\n| Language | n | status | predicted total (s) |\n|---|---:|---|---:|\n")
         for r in runs:
-            pm = f"{int(r['peak_memory_bytes']) / 2**20:.1f}" if r["peak_memory_bytes"] else "-"
-            f.write(f"| {NAMES[r['language']]} | {r['n']} | {r['status']} | {pm} | {r['predicted_total_s'] or '-'} |\n")
+            if r["status"] != "ok":
+                f.write(f"| {NAMES[r['language']]} | {r['n']} | {r['status']} | {r['predicted_total_s'] or '-'} |\n")
 
     make_figures(summary, langs)
     print(open(RESULTS_DIR / "summary.md", encoding="utf-8").read())
@@ -148,7 +130,7 @@ def make_figures(summary, langs):
     c_rows = by_lang.get("c") or next(v for v in by_lang.values() if v)
     n0, t0 = c_rows[0]["n"], c_rows[0]["median_s"]
     ref_n = np.array(all_n, dtype=float)
-    ax.plot(ref_n, t0 * (ref_n / n0) ** 3, linestyle="--", color="#888888", linewidth=1.2, label="∝ n³ (reference)")
+    ax.plot(ref_n, t0 * (ref_n / n0) ** 3, linestyle="--", color="#888888", linewidth=1.2, label="grows like n³")
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
     ax.set_xticks(all_n)
@@ -160,25 +142,7 @@ def make_figures(summary, langs):
     fig.savefig(FIGURES_DIR / "runtime_loglog.png")
     plt.close(fig)
 
-    # 2) Time per inner-loop iteration (median / n^3): the "constant" of the cubic model
-    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=150)
-    for l in langs:
-        rows = by_lang[l]
-        if rows:
-            ax.plot([r["n"] for r in rows], [r["ns_per_inner_iteration"] for r in rows], color=COLORS[l],
-                    marker=MARKERS[l], markersize=6, linewidth=2, label=NAMES[l])
-    ax.set_xscale("log", base=2)
-    ax.set_yscale("log")
-    ax.set_xticks(all_n)
-    ax.set_xticklabels([str(x) for x in all_n])
-    style(ax, "matrix size n (n × n)", "ns per inner iteration (median time / n³)",
-          "Cost of one multiply-add c[i][j] += a[i][k] × b[k][j]")
-    ax.legend(frameon=False)
-    fig.tight_layout()
-    fig.savefig(FIGURES_DIR / "time_per_iteration.png")
-    plt.close(fig)
-
-    # 3) Peak process memory vs n, with the theoretical size of the three arrays
+    # 2) Peak process memory vs n, with the theoretical size of the three arrays
     fig, ax = plt.subplots(figsize=(7, 4.5), dpi=150)
     for l in langs:
         rows = [r for r in by_lang[l] if not math.isnan(r["peak_memory_mib"])]
@@ -186,17 +150,17 @@ def make_figures(summary, langs):
             ax.plot([r["n"] for r in rows], [r["peak_memory_mib"] for r in rows], color=COLORS[l],
                     marker=MARKERS[l], markersize=6, linewidth=2, label=NAMES[l])
     ax.plot(all_n, [3 * 8 * n * n / 2**20 for n in all_n], linestyle="--", color="#888888",
-            linewidth=1.2, label="3 × 8n² bytes (A, B, C as doubles)")
+            linewidth=1.2, label="only the 3 matrices (8 bytes per number)")
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
     ax.set_xticks(all_n)
     ax.set_xticklabels([str(x) for x in all_n])
-    style(ax, "matrix size n (n × n)", "peak process memory (MiB)", "Peak memory of the benchmark process")
+    style(ax, "matrix size n (n × n)", "peak process memory (MiB)", "Peak memory of each program")
     ax.legend(frameon=False)
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "memory.png")
     plt.close(fig)
-    print("Wrote figures/runtime_loglog.png, figures/time_per_iteration.png, figures/memory.png")
+    print("Wrote figures/runtime_loglog.png, figures/memory.png")
 
 
 if __name__ == "__main__":

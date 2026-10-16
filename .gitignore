@@ -30,3 +30,10 @@ desktop.ini
 
 # Log of the full run (kept locally)
 assignment1/results/full_run_log.txt
+
+# Per-configuration CSVs (all their rows are merged into results/raw/times.csv)
+assignment1/results/raw/times_*_n*.csv
+
+# Report sources (only the PDF is published)
+assignment1/report/*.docx
+assignment1/report/*.py

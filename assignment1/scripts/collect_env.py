@@ -1,5 +1,4 @@
-"""Record the hardware and software environment into results/environment.json and .txt."""
-import json
+"""Record the hardware and software environment into results/environment.txt."""
 import platform
 import shutil
 import subprocess
@@ -55,8 +54,6 @@ def main():
         "threads": "all three implementations are single-threaded (no parallel code, no BLAS in the kernels)",
     }
     RESULTS_DIR.mkdir(exist_ok=True)
-    with open(RESULTS_DIR / "environment.json", "w", encoding="utf-8") as f:
-        json.dump(env, f, indent=2)
     with open(RESULTS_DIR / "environment.txt", "w", encoding="utf-8") as f:
         for k, v in env.items():
             f.write(f"{k:20s}: {v}\n")
