@@ -1,4 +1,4 @@
-| Language | n | runs | median (s) | IQR (s) | ns / inner iteration | x C | peak memory (MiB) | arrays 3·8n² (MiB) | checksum |
+| Language | n | runs | median (s) | IQR (s) | ns / inner iteration | x C | peak memory (MiB) | arrays 3×8n² (MiB) | checksum |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|:-:|
 | C | 64 | 5 | 0.0001124 | 2e-06 | 0.43 | 1.0 | 1.9 | 0.09 | OK |
 | C | 128 | 5 | 0.001953 | 2.3e-05 | 0.93 | 1.0 | 4.9 | 0.38 | OK |

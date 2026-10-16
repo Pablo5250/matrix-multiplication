@@ -116,7 +116,7 @@ def table(doc, header, rows, caption, widths=None):
     return t
 
 
-def figure(doc, file, caption, width_cm=15):
+def figure(doc, file, caption, width_cm=13):
     doc.add_picture(str(FIG / file), width=Cm(width_cm))
     doc.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
     cap = doc.add_paragraph()
@@ -221,7 +221,7 @@ def build():
             table(doc, ["Language", "n", "Status", "Predicted total time"], rows, block[1])
         elif kind == "slope_table":
             rows = [[NAMES[s["language"]], s["sizes_used"], s["exponent_b"]] for s in slopes]
-            table(doc, ["Language", "Sizes used for the fit", "Exponent b (time ≈ a·nᵇ)"], rows, block[1])
+            table(doc, ["Language", "Sizes used for the fit", "Exponent b (time ≈ a × nᵇ)"], rows, block[1])
         elif kind == "validation_table":
             rows = []
             for n in sorted({int(v["n"]) for v in validation}):

@@ -1,5 +1,5 @@
 Assignment 1 - Basic Matrix Multiplication in Python, Java and C
-Pablo Castillo Garcera - Big Data, ULPGC 2026-2027
+Pablo Castillo Garcera - Big Data 2026-2027
 
 GitHub repository (code, data scripts, raw results, figures and report):
 https://github.com/Pablo5250/matrix-multiplication

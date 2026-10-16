@@ -101,7 +101,7 @@ def main():
 
     # ---- Markdown tables for the report --------------------------------------
     with open(RESULTS_DIR / "summary.md", "w", encoding="utf-8") as f:
-        f.write("| Language | n | runs | median (s) | IQR (s) | ns / inner iteration | x C | peak memory (MiB) | arrays 3·8n² (MiB) | checksum |\n")
+        f.write("| Language | n | runs | median (s) | IQR (s) | ns / inner iteration | x C | peak memory (MiB) | arrays 3×8n² (MiB) | checksum |\n")
         f.write("|---|---:|---:|---:|---:|---:|---:|---:|---:|:-:|\n")
         for r in summary:
             f.write(f"| {NAMES[r['language']]} | {r['n']} | {r['measured_runs']} | {r['median_s']:.4g} | "
@@ -172,7 +172,7 @@ def make_figures(summary, langs):
     ax.set_xticks(all_n)
     ax.set_xticklabels([str(x) for x in all_n])
     style(ax, "matrix size n (n × n)", "ns per inner iteration (median time / n³)",
-          "Cost of one multiply-add c[i][j] += a[i][k]·b[k][j]")
+          "Cost of one multiply-add c[i][j] += a[i][k] × b[k][j]")
     ax.legend(frameon=False)
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "time_per_iteration.png")
@@ -186,7 +186,7 @@ def make_figures(summary, langs):
             ax.plot([r["n"] for r in rows], [r["peak_memory_mib"] for r in rows], color=COLORS[l],
                     marker=MARKERS[l], markersize=6, linewidth=2, label=NAMES[l])
     ax.plot(all_n, [3 * 8 * n * n / 2**20 for n in all_n], linestyle="--", color="#888888",
-            linewidth=1.2, label="3 · 8n² bytes (A, B, C as doubles)")
+            linewidth=1.2, label="3 × 8n² bytes (A, B, C as doubles)")
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
     ax.set_xticks(all_n)

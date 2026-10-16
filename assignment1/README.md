@@ -1,6 +1,6 @@
 # Assignment 1 — Basic Matrix Multiplication in Python, Java and C
 
-Big Data · Grado en Ciencia e Ingeniería de Datos · ULPGC · 2026-2027
+Big Data, Grado en Ciencia e Ingeniería de Datos, 2026-2027
 Author: Pablo Castillo Garcerá
 
 **Research question.** How does the matrix size *n* affect the runtime and the memory use of the
@@ -52,7 +52,7 @@ as the reference result for the correctness check.
   and compared with NumPy's result.
 * **Memory:** peak memory of the whole benchmark process, read from the operating system every
   10 ms with `psutil`. Windows: peak working set (`peak_wset`); Linux/macOS: largest sampled RSS. It includes the interpreter/JVM, so it is
-  compared with the theoretical size of the three matrices, 3 · 8n² bytes.
+  compared with the theoretical size of the three matrices, 3 × 8n² bytes.
 * **Budgets (declared before running):** 1200 s per configuration and 4096 MB. A size whose predicted
   time (previous median × (n/n_prev)³ × runs) exceeds the budget is not started and is reported as
   `skipped_predicted_over_budget`; a run that goes over a budget is killed and reported as `timeout`
@@ -63,10 +63,10 @@ All the settings are in [`config.json`](config.json).
 
 ## Correctness
 
-* Unit tests in each language: known 2×2 and 3×3 products, A·I = A, I·A = A, A·0 = 0, 1×1 case.
+* Unit tests in each language: known 2×2 and 3×3 products, A × I = A, I × A = A, A × 0 = 0, 1×1 case.
 * Cross-check (`scripts/validate.py`): for n = 16, 64, 128 every program writes its full C, which is
   compared with NumPy `A @ B` using `np.allclose(rtol=1e-9, atol=1e-12)`. The inputs are positive,
-  so the expected relative rounding error is about n · 1.1·10⁻¹⁶ (< 10⁻¹³ for these sizes); 10⁻⁹ is a
+  so the expected relative rounding error is about n × 1.1×10⁻¹⁶ (< 10⁻¹³ for these sizes); 10⁻⁹ is a
   safe margin that would still catch any real bug. The script also checks whether the three
   languages give bit-identical results (they should, because they add in the same order).
 
@@ -125,7 +125,7 @@ python python/bench.py N data/inputs WARMUP REPS out.csv
 | `results/raw/times.csv` | every run: language, n, run_type (warmup/measured), rep, time_ns, checksum |
 | `results/raw/runs.csv` | one row per configuration: status, peak memory, budgets, predicted time |
 | `results/summary.csv`, `results/summary.md` | median, IQR, min, max, ns per inner iteration, ratio to C, memory |
-| `results/slopes.csv` | fitted exponent *b* in time ≈ a · nᵇ (sizes ≥ 256) |
+| `results/slopes.csv` | fitted exponent *b* in time ≈ a × nᵇ (sizes ≥ 256) |
 | `results/validation.csv` | errors against NumPy and the bit-identical check |
 | `results/environment.txt` | CPU, cores, RAM, OS, Python, Java, gcc versions and flags |
 | `results/extra_power_of_two.csv` | extra experiment: C and Java at n-1, n, n+1 |

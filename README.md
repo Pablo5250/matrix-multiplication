@@ -1,6 +1,6 @@
 # Matrix Multiplication — Individual Assignments
 
-Big Data · Grado en Ciencia e Ingeniería de Datos · Universidad de Las Palmas de Gran Canaria · 2026-2027
+Big Data, Grado en Ciencia e Ingeniería de Datos, 2026-2027
 Author: Pablo Castillo Garcerá
 
 Empirical studies of the performance and scalability of matrix multiplication.
