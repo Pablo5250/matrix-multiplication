@@ -32,7 +32,7 @@ Median of 5 runs. Full table: [`results/summary.md`](results/summary.md).
 | `scripts/` | Build, tests, check against NumPy, run the benchmark, make the tables and figures |
 | `results/` | Raw times (`raw/times.csv`), memory and status (`raw/runs.csv`), summary tables, computer info |
 | `figures/` | The figures used in the report |
-| `report/` | The report (PDF) and the link to this repository (TXT) |
+| `report/` | The report (PDF), the presentation (PDF) and the link to this repository (TXT) |
 
 All the settings (sizes, number of runs, time limit) are in [`config.json`](config.json).
 
