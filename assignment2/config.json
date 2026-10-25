@@ -1,0 +1,38 @@
+{
+  "numeric_type": "float64 (Java double)",
+  "dense_values": "uniform [0, 1), java.util.Random, seed 42 + n (A) and 4242 + n (B)",
+  "sparse_values": "each position nonzero with probability density, value uniform (0, 1], java.util.Random, seed 7 + n (A) and 77 + n (B)",
+
+  "warmup_runs": 3,
+  "measured_runs": 5,
+  "time_budget_seconds_per_configuration": 1200,
+  "memory_budget_mb": 8192,
+  "java_options": ["-Xmx8g"],
+
+  "part_a": {
+    "methods": ["ijk", "ikj", "blocked"],
+    "sizes": [256, 512, 1024, 2048, 4096, 8192]
+  },
+  "block_size_test": {
+    "n": 2048,
+    "methods": ["blocked32", "blocked64", "blocked128", "blocked256"]
+  },
+  "part_b_density": {
+    "n": 2048,
+    "densities_pct": [0.01, 0.1, 1, 5, 10, 25, 50],
+    "methods": ["csr", "blocked"]
+  },
+  "part_b_size": {
+    "density_pct": 0.1,
+    "sizes": [1024, 2048, 4096, 8192, 16384, 32768],
+    "methods": ["csr", "blocked"]
+  },
+
+  "quick": {
+    "part_a_sizes": [256, 512],
+    "block_size_n": 256,
+    "part_b_density_n": 256,
+    "part_b_densities_pct": [1, 10],
+    "part_b_sizes": [256, 512]
+  }
+}

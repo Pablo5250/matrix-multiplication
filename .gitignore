@@ -40,3 +40,8 @@ assignment1/report/*.py
 
 # Local copy of the files to submit (already in assignment1/report/)
 assignment1/ENTREGA_FINAL/
+
+# Assignment 2: per-configuration CSVs and logs (merged into results/raw/times.csv), full run log
+assignment2/results/raw/times_*.csv
+assignment2/results/raw/log_*.txt
+assignment2/results/full_run_log.txt
