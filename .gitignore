@@ -45,3 +45,5 @@ assignment1/ENTREGA_FINAL/
 assignment2/results/raw/times_*.csv
 assignment2/results/raw/log_*.txt
 assignment2/results/full_run_log.txt
+assignment2/report/*.docx
+assignment2/report/*.py

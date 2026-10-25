@@ -9,7 +9,7 @@ Experiments about the time and the memory that matrix multiplication needs.
 | Assignment | Topic | Folder | Status |
 |---|---|---|---|
 | 1 | Basic implementations in Python, Java and C | [`assignment1/`](assignment1/) | done |
-| 2 | Optimised approaches and sparse matrices | - | - |
+| 2 | Optimised approaches and sparse matrices | [`assignment2/`](assignment2/) | done |
 | 3 | Parallel multiplication | - | - |
 | 4 | Distributed multiplication | - | - |
 

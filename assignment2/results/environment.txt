@@ -1,0 +1,12 @@
+os                  : Windows 11 (10.0.26300)
+cpu                 : AMD Ryzen 9 5900X 12-Core Processor
+physical_cores      : 12
+logical_processors  : 24
+ram_gb              : 34.3
+python              : CPython 3.14.3
+psutil              : 7.2.2
+matplotlib          : 3.10.9
+java_runtime        : openjdk version "25.0.1" 2025-10-21 | OpenJDK Runtime Environment (build 25.0.1+8-27) | OpenJDK 64-Bit Server VM (build 25.0.1+8-27, mixed mode, sharing)
+javac               : javac 25.0.1
+java_options        : ['-Xmx8g']
+threads             : all methods are single-threaded (no parallel code, no library in the kernels); the JVM also runs its own JIT and GC threads

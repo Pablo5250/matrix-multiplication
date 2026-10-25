@@ -1,0 +1,8 @@
+Assignment 2 - Optimised and Sparse Matrix Multiplication in Java
+Pablo Castillo Garcera - Big Data 2026-2027
+
+GitHub repository (code, raw results, figures and report):
+https://github.com/Pablo5250/matrix-multiplication
+
+Assignment 2 folder:
+https://github.com/Pablo5250/matrix-multiplication/tree/main/assignment2
