@@ -47,3 +47,6 @@ assignment2/results/raw/log_*.txt
 assignment2/results/full_run_log.txt
 assignment2/report/*.docx
 assignment2/report/*.py
+
+# Local copy of the files to submit
+assignment2/ENTREGA_FINAL/
