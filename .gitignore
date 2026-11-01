@@ -50,3 +50,13 @@ assignment2/report/*.py
 
 # Local copy of the files to submit
 assignment2/ENTREGA_FINAL/
+
+# Assignment 3: per-configuration CSVs and logs (merged into results/raw/times.csv), full run log
+assignment3/results/raw/times_*.csv
+assignment3/results/raw/log_*.txt
+assignment3/results/full_run_log.txt
+assignment3/report/*.docx
+assignment3/report/*.py
+
+# Local copy of the files to submit
+assignment3/ENTREGA_FINAL/
