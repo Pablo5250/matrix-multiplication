@@ -1,0 +1,20 @@
+{
+  "numeric_type": "float64 (Java double)",
+  "input_values": "uniform [0, 1), java.util.Random, seed 42 + n (A) and 4242 + n (B), same as Assignment 2",
+  "tile_size": 64,
+
+  "warmup_runs": 3,
+  "warmup_runs_small_sizes": {"256": 100, "512": 30, "1024": 10},
+  "measured_runs": 5,
+  "time_budget_seconds_per_configuration": 1200,
+  "memory_budget_mb": 8192,
+  "java_options": ["-Xmx8g", "-XX:ParallelGCThreads=1", "-XX:ConcGCThreads=1"],
+
+  "sizes": [256, 512, 1024, 2048, 4096, 8192],
+  "thread_counts": [1, 2, 4, 6, 8, 12, 16, 24, 32],
+
+  "quick": {
+    "sizes": [256, 512],
+    "thread_counts": [1, 4, 12]
+  }
+}
