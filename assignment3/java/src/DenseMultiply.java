@@ -39,22 +39,30 @@ public final class DenseMultiply {
 
     /** Blocked i-k-j work for the rows rowStart (included) to rowEnd (not included) of C. */
     public static void blockedRows(double[][] a, double[][] b, double[][] c, int rowStart, int rowEnd, int size) {
-        int n = a.length;
         for (int ii = rowStart; ii < rowEnd; ii += size) {
-            int iMax = Math.min(ii + size, rowEnd);
-            for (int kk = 0; kk < n; kk += size) {
-                int kMax = Math.min(kk + size, n);
-                for (int jj = 0; jj < n; jj += size) {
-                    int jMax = Math.min(jj + size, n);
-                    for (int i = ii; i < iMax; i++) {
-                        double[] ci = c[i];
-                        double[] ai = a[i];
-                        for (int k = kk; k < kMax; k++) {
-                            double aik = ai[k];
-                            double[] bk = b[k];
-                            for (int j = jj; j < jMax; j++) {
-                                ci[j] += aik * bk[j];
-                            }
+            tileRow(a, b, c, ii, Math.min(ii + size, rowEnd), size);
+        }
+    }
+
+    /**
+     * One band of at most size rows of C. It is a separate method on purpose: it is called many times in
+     * every multiplication, so the JIT compiles it fully after a few calls. When the whole multiplication was
+     * one long call, the sequential version sometimes stayed in slower code for all the runs.
+     */
+    private static void tileRow(double[][] a, double[][] b, double[][] c, int ii, int iMax, int size) {
+        int n = a.length;
+        for (int kk = 0; kk < n; kk += size) {
+            int kMax = Math.min(kk + size, n);
+            for (int jj = 0; jj < n; jj += size) {
+                int jMax = Math.min(jj + size, n);
+                for (int i = ii; i < iMax; i++) {
+                    double[] ci = c[i];
+                    double[] ai = a[i];
+                    for (int k = kk; k < kMax; k++) {
+                        double aik = ai[k];
+                        double[] bk = b[k];
+                        for (int j = jj; j < jMax; j++) {
+                            ci[j] += aik * bk[j];
                         }
                     }
                 }
