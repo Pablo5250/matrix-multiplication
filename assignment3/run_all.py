@@ -1,5 +1,5 @@
 """Run the whole study in order. Usage:
-    python run_all.py            full study (about 1 hour)
+    python run_all.py            full study (about 1 hour 10 minutes)
     python run_all.py --quick    quick check with small sizes (about 2 minutes)
 """
 import subprocess

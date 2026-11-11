@@ -1,0 +1,13 @@
+os                  : Windows 11 (10.0.26300)
+cpu                 : AMD Ryzen 9 5900X 12-Core Processor
+physical_cores      : 12
+logical_processors  : 24
+ram_gb              : 34.3
+python              : CPython 3.14.3
+psutil              : 7.2.2
+matplotlib          : 3.10.9
+java_runtime        : openjdk version "25.0.1" 2025-10-21 | OpenJDK Runtime Environment (build 25.0.1+8-27) | OpenJDK 64-Bit Server VM (build 25.0.1+8-27, mixed mode, sharing)
+javac               : javac 25.0.1
+java_options        : ['-Xmx8g', '-XX:ParallelGCThreads=1', '-XX:ConcGCThreads=1']
+threads             : sequential: 1 thread; parallel: [1, 2, 4, 6, 8, 12, 16, 24, 32] threads, no library threads; the JVM also runs JIT threads (mostly during warm-up) and 1 GC thread
+affinity            : none set, the Windows scheduler decides where each thread runs

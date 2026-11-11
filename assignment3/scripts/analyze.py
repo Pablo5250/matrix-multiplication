@@ -113,13 +113,32 @@ def shown_sizes(summary):
     return [n for n in wanted if n in sizes] or sizes[:4]
 
 
-def lines(ax, summary, field, label_x_shift=0.4):
+def lines(ax, summary, field):
+    ends = []
     for k, n in enumerate(shown_sizes(summary)):
         rows = parallel_rows(summary, n)
         xs, ys = [r["threads"] for r in rows], [r[field] for r in rows]
         ax.plot(xs, ys, marker="o", markersize=5, linewidth=2, color=SERIES[k], label=f"n = {n}")
-        ax.annotate(f"n = {n}", (xs[-1], ys[-1]), xytext=(6, 0), textcoords="offset points", va="center",
-                    fontsize=9, color=INK)
+        ends.append((xs[-1], ys[-1], f"n = {n}"))
+    return ends
+
+
+def end_labels(ax, ends, min_gap=0.055):
+    """Name each line at its right end; labels that would touch are pushed apart (in axes units)."""
+    to_axes = ax.transAxes.inverted()
+    placed = sorted(((to_axes.transform(ax.transData.transform((x, y)))[1], x, y, text) for x, y, text in ends))
+    last = -1.0
+    for pos, x, y, text in placed:
+        pos = max(pos, last + min_gap)
+        last = pos
+        ax.annotate(text, (x, y), xycoords="data", xytext=(8, pos), textcoords=("offset points", "axes fraction"),
+                    va="center", fontsize=9, color=INK)
+
+
+def legend_below(ax):
+    handles, labels = ax.get_legend_handles_labels()
+    ax.legend(handles, labels, frameon=False, fontsize=9, ncol=len(labels), loc="upper center",
+              bbox_to_anchor=(0.5, -0.17))
 
 
 def hardware_lines(ax, top):
@@ -134,38 +153,41 @@ def make_figures(summary):
     right = max(threads) + 4.5
 
     # 1) Speedup with the perfect line
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, ax = plt.subplots(figsize=(7, 4.8))
     ax.plot([1, PHYSICAL_CORES], [1, PHYSICAL_CORES], color=MUTED, linewidth=1.2, linestyle="--", label="perfect speedup")
-    lines(ax, summary, "speedup")
+    ends = lines(ax, summary, "speedup")
     ax.set_xticks(threads)
     ax.set_xlim(0, right)
     ax.set_ylim(0, max(PHYSICAL_CORES, max(r["speedup"] for r in summary)) + 1)
     style(ax, "threads p", "speedup S(p)", "Speedup: how many times faster than the sequential version")
     hardware_lines(ax, ax.get_ylim()[1])
-    ax.legend(frameon=False, loc="upper left", fontsize=9)
+    end_labels(ax, ends)
+    legend_below(ax)
     save(fig, "speedup.png")
 
     # 2) Efficiency
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, ax = plt.subplots(figsize=(7, 4.8))
     ax.axhline(1, color=MUTED, linewidth=1.2, linestyle="--", label="perfect efficiency")
-    lines(ax, summary, "efficiency")
+    ends = lines(ax, summary, "efficiency")
     ax.set_xticks(threads)
     ax.set_xlim(0, right)
     ax.set_ylim(0, max(1.15, max(r["efficiency"] for r in summary) + 0.1))
     style(ax, "threads p", "efficiency E(p)", "Efficiency: how much of each thread is really used")
     hardware_lines(ax, ax.get_ylim()[1])
-    ax.legend(frameon=False, loc="lower left", fontsize=9)
+    end_labels(ax, ends)
+    legend_below(ax)
     save(fig, "efficiency.png")
 
     # 3) Time against threads
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    lines(ax, summary, "median_s")
+    fig, ax = plt.subplots(figsize=(7, 4.8))
+    ends = lines(ax, summary, "median_s")
     ax.set_yscale("log")
     ax.set_xticks(threads)
     ax.set_xlim(0, right)
     style(ax, "threads p", "median time (s), log scale", "Time of the parallel method")
     hardware_lines(ax, ax.get_ylim()[1])
-    ax.legend(frameon=False, loc="upper right", bbox_to_anchor=(0.9, 0.95), fontsize=9)
+    end_labels(ax, ends)
+    legend_below(ax)
     save(fig, "time.png")
 
     # 4) One thread: the cost of the threads themselves
@@ -185,13 +207,14 @@ def make_figures(summary):
     save(fig, "overhead_one_thread.png")
 
     # 5) Memory against threads
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    lines(ax, summary, "peak_memory_mib")
+    fig, ax = plt.subplots(figsize=(7, 4.8))
+    ends = lines(ax, summary, "peak_memory_mib")
     ax.set_yscale("log")
     ax.set_xticks(threads)
     ax.set_xlim(0, right)
     style(ax, "threads p", "peak memory (MiB), log scale", "Peak memory of the Java process")
-    ax.legend(frameon=False, loc="center right", bbox_to_anchor=(0.9, 0.5), fontsize=9)
+    end_labels(ax, ends)
+    legend_below(ax)
     save(fig, "memory.png")
 
 
