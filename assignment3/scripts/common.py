@@ -6,9 +6,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent          # .../assignment3
-RESULTS_DIR = ROOT / "results"
+QUICK = "--quick" in sys.argv                           # the quick check never overwrites the real results
+RESULTS_DIR = ROOT / ("results_quick" if QUICK else "results")
 RAW_DIR = RESULTS_DIR / "raw"
-FIGURES_DIR = ROOT / "figures"
+FIGURES_DIR = ROOT / ("figures_quick" if QUICK else "figures")
 BUILD_DIR = ROOT / "build"
 EXE = ".exe" if sys.platform == "win32" else ""
 

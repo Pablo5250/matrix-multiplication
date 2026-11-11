@@ -22,6 +22,9 @@ public final class ParallelMultiply {
     }
 
     public static double[][] blocked(double[][] a, double[][] b, int size, int threads) {
+        if (threads < 1) {
+            throw new IllegalArgumentException("threads must be at least 1");
+        }
         int n = a.length;
         double[][] c = new double[n][n];
         int chunks = Math.min(n, threads * CHUNKS_PER_THREAD);

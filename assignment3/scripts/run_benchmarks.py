@@ -131,7 +131,7 @@ def main():
             with open(path, encoding="utf-8") as f:
                 next(f)
                 out.writelines(f)
-    print("Wrote results/raw/runs.csv and results/raw/times.csv")
+    print(f"Wrote {RAW_DIR / 'runs.csv'} and {RAW_DIR / 'times.csv'}")
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ cores, so other work changes the times.
 
 On Windows, double-click:
 
-* `quick_test.bat`: quick check with small sizes (about 2 minutes)
+* `quick_test.bat`: quick check with small sizes (about 2 minutes, writes to `results_quick/` and `figures_quick/`)
 * `run_all.bat`: the full study (about 1 hour 10 minutes)
 
 Or step by step, from this folder:

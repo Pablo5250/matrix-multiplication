@@ -60,3 +60,5 @@ assignment3/report/*.py
 
 # Local copy of the files to submit
 assignment3/ENTREGA_FINAL/
+assignment3/results_quick/
+assignment3/figures_quick/
